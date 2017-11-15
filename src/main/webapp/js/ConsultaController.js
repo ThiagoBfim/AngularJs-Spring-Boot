@@ -36,10 +36,10 @@
 
 	} ]);
 
-	app.directive("navbarMenu", function() {
+/*	app.directive("navbarMenu", function() {
 		return {
 			restrict : 'E',
 			templateUrl : '../home.html'
 		};
-	});
+	});*/
 
