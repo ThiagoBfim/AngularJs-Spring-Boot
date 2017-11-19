@@ -1,24 +1,27 @@
 <meta charset="UTF-8">
 <div class="card bg-light container">
 	<h1>Cadastro</h1>
+	{{carroModel | json}}
 	<div class="card-body">
-		<form name="form" 
-			novalidate ng-submit="form.$valid && cadastroCtrl.salvar()">
-			<div ng-class="cadastroCtrl.success ? 'alert alert-success' : 'alert alert-danger'" id="errorMessage" ng-show="temMensagem">{{mensagem}}
-			</div>
+		<form name="form" novalidate
+			ng-submit="form.$valid && cadastroCtrl.salvar()">
+			<div
+				ng-class="cadastroCtrl.success ? 'alert alert-success' : 'alert alert-danger'"
+				id="errorMessage" ng-show="temMensagem">{{mensagem}}</div>
 			<div class="form-group row">
 				<div class="col-md-6">
 					<label for="placa" class="col-sm-6">Placa:</label> <input
-						type="text" name="placa" class="form-control col-sm-10 placa required"
-						mask="AAA9999" ng-model="cadastroCtrl.carro.placa" required />
+						type="text" name="placa"
+						class="form-control col-sm-10 placa required" mask="AAA9999"
+						ng-model="cadastroCtrl.carro.placa" required />
 					<div style="color: red"
 						ng-show="form.placa.$dirty && form.placa.$invalid">Placa
 						incorreta.</div>
 				</div>
 				<div class="col-md-6">
 					<label for="modelo" class="col-sm-6">Modelo:</label> <input
-						type="text" name="modelo" class="form-control col-sm-10 required" required
-						ng-model="cadastroCtrl.carro.modelo.descricao" />
+						type="text" name="modelo" class="form-control col-sm-10 required"
+						required ng-model="cadastroCtrl.carro.modelo.descricao" />
 					<div style="color: red"
 						ng-show="form.modelo.$dirty && form.modelo.$invalid">
 						Informe o Modelo.</div>
@@ -45,17 +48,17 @@
 						ng-options="categoria for categoria in categorias" required></select>
 				</div>
 				<!-- <div class="col-md-4">
-							<div class="row">
-								<label for="fabricante" class="col-sm-6">Fabricante:</label>
-							</div>
-							<div class="row">
-								<div class="input-group">
-									<input type="text" name="fabricante" ng-fabricante="carro.fabricante"
-										class="form-control col-sm-10" /> 
-										<a href="#" class="input-group-addon">Pesquisar</a>
-								</div>
-							</div>
-						</div> -->
+					<div class="row">
+						<label for="fabricante" class="col-sm-6">Fabricante:</label>
+					</div>
+					<div class="row">
+						<div class="input-group">
+							<input type="text" name="fabricante"
+								ng-fabricante="carro.fabricante" class="form-control col-sm-10" />
+							<a href="#" class="input-group-addon">Pesquisar</a>
+						</div>
+					</div>
+				</div> -->
 			</div>
 
 			<div class="form-group row float-right">
@@ -70,4 +73,70 @@
 		</form>
 		<a href="../consulta/consulta.html" class="btn btn-default">Voltar</a>
 	</div>
+
+	<!-- <div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			Modal content
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Modal Header</h4>
+				</div>
+				<div class="modal-body">
+					<form wicket:id="form">
+						<div class="alert alert-danger" role="alert" wicket:id="feedback"></div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<label for="nome" class="col-sm-6">Nome:</label> <input
+									type="text" name="nome" class="form-control col-sm-10"
+									placeholder="Informe o nome" wicket:id="nome">
+							</div>
+							<div class="col-md-6">
+								<label for="pais" class="col-sm-6" wicket:id="labelPais"></label>
+								<input type="text" name="pais" class="form-control col-sm-10"
+									placeholder="Informe o páis" wicket:id="pais">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row form-group float-right">
+								<div class="btn-group">
+									<a wicket:id="salvar" type="submit" class="btn btn-primary">Cadastrar</a>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row col-md-12">
+							<div class="col-md-12" style="padding-top: 10px;">
+								<div wicket:id="noResult" id="vazio" class="alert alert-info"
+									role="alert">Nenhum fabricante cadastrado.</div>
+								<table id="tabela" class="table table-striped ">
+									<thead>
+										<tr>
+											<th>Nome</th>
+											<th>País</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="carros">
+										<tr wicket:id="fabricantes">
+											<td><span wicket:id="nome"></span></td>
+											<td><span wicket:id="pais"></span></td>
+											<td class="text-right"><input type="radio"
+												name="selecionar" class="form-control"
+												wicket:id="selecionado"></td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="row form-group float-right">
+									<div class="btn-group">
+										<a wicket:id="selecionar" class="btn btn-primary">Selecionar</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div> -->
 </div>

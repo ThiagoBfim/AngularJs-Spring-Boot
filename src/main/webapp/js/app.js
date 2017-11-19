@@ -2,7 +2,10 @@ var app = angular.module('crudApp', [ 'ui.router', 'ngMask' ]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
-	$urlRouterProvider.otherwise('/');
+
+	$stateProvider.state('/home', {
+		url : '/home',
+	});
 
 	$stateProvider.state('cadastro', {
 		url : '/carro',

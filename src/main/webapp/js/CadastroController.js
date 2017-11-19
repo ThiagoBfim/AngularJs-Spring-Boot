@@ -9,7 +9,6 @@ app.controller('CadastroController', [
 			var self = this;
 			self.carro = {};
 			self.success = false;
-			errorMessage
 			self.descricaoTemp = '';
 			$scope.categorias = [];
 			$scope.tracoes = [];

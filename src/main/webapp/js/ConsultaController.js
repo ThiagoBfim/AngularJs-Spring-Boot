@@ -1,8 +1,30 @@
 'use strict';
+
+
+/*app.config(function ($routeProvider) {
+    $routeProvider
+       .when('/carro/:id', {
+         controller: 'FriendsController',
+         templateUrl: 'views/friends.html'
+      })
+      .otherwise({
+        redirectTo: '/friends/foo'
+      });  
+})*/
+
+app.config(function ($stateProvider) {
+	$stateProvider.state('edicao', {
+		url : '/carro',
+		templateUrl : '/carro/4',
+		controller : 'CadastroController',
+		controllerAs : 'cadastroCtrl'
+	});
+
+})
+
 app.controller('ConsultaController', [ '$http', '$q', '$scope',
 		function($http, $q, $scope) {
 
-			var carro = {};
 			var carroFilter;
 			var self = this;
 			self.hasNoElement = true;
@@ -25,7 +47,6 @@ app.controller('ConsultaController', [ '$http', '$q', '$scope',
 			};
 
 			$scope.$watch('[consultaCtrl.carro.placa, consultaCtrl.carro.modelo.descricao, consultaCtrl.carro.tracao, consultaCtrl.carro.categoria]', function(val) {
-				console.log(val);
 				$http({
 					method : 'POST',
 					url : '/carrosByFiltro',
