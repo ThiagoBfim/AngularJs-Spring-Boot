@@ -15,8 +15,8 @@ public class CarroService {
     @Autowired
     private CarroRepository repository;
 
-    public List<Carro> listar() {
-        return repository.findAll();
+    public List<Carro> listar(Carro carro) {
+        return repository.listarByFiltro(carro);
     }
 
     public Carro obter(Integer id) {

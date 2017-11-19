@@ -6,24 +6,28 @@
 			<div class="form-group row">
 				<div class="col-md-6">
 					<label for="placa" class="col-sm-6">Placa:</label> <input
-						type="text" name="placa" class="form-control col-sm-10"
-						wicket:id="placa">
+						type="text" name="placa" class="form-control col-sm-10" mask="AAA9999" 
+						ng-model="consultaCtrl.carro.placa">
 				</div>
 				<div class="col-md-6">
 					<label for="modelo" class="col-sm-6">Modelo:</label> <input
 						type="text" name="modelo" class="form-control col-sm-10"
-						wicket:id="modelo">
+						ng-model="consultaCtrl.carro.modelo.descricao">
 				</div>
 			</div>
 			<div class="form-group row">
 				<div class="col-md-4">
-					<label for="tracao" class="col-sm-12">Tração:</label> <span
-						class="radio-inline col-sm-12" wicket:id="tracao"
-						id="numberRadioChoice"> </span>
+					<label for="tracao" class="col-sm-12">Tração:</label> <label
+						ng-repeat="t in consultaCtrl.tracoes"> <input type="radio"
+						name="tracao" ng-model="consultaCtrl.carro.tracao" ng-value="t"
+						required /> {{t}}
+					</label>
 				</div>
 				<div class="col-md-4">
 					<label for="categoria" class="col-sm-6">Categoria:</label> <select
-						wicket:id="categoria" class="form-control col-sm-10"></select>
+						class="form-control col-sm-10" name="categoria"
+						ng-model="consultaCtrl.carro.categoria"
+						ng-options="categoria for categoria in consultaCtrl.categorias" required></select>
 				</div>
 				<div class="col-md-4">
 					<label for="fabricante" class="col-sm-6">Fabricante:</label> <input

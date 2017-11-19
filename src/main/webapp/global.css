@@ -1,7 +1,7 @@
-.ng-invalid.ng-dirty {
+.required.ng-invalid.ng-dirty {
   border-color: red;
 } 
 
-.ng-valid.ng-dirty {
+.required.ng-valid.ng-dirty {
   border-color: green;
 } 

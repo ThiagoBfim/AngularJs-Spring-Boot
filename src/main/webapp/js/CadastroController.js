@@ -1,102 +1,111 @@
 'use strict';
-	var app = angular.module('crudApp', ['ngMask']);
-	//app.service('LocalService', function(){});
-	app.controller('CadastroController', [
-			'$http',
-			'$scope',
-			function($http, $scope) {
+// var app = angular.module('crudApp', ['ngMask']);
+// app.service('LocalService', function(){});
+app.controller('CadastroController', [
+		'$http',
+		'$scope',
+		function($http, $scope) {
 
-				var self = this;
-				self.carro = {};
-				errorMessage
-				self.descricaoTemp = '';
-				$scope.categorias = listarCategorias();
-				$scope.tracoes = listarTracoes();
-				$scope.modelos = [];
-				
-				$scope.temErro = false;
-				$scope.mensagemErro = "teste";
-				
-				$scope.isModeloSelected = false;
+			var self = this;
+			self.carro = {};
+			self.success = false;
+			errorMessage
+			self.descricaoTemp = '';
+			$scope.categorias = [];
+			$scope.tracoes = [];
+			$scope.modelos = [];
+			listarCategorias();
+			listarTracoes();
+		
 
-				this.salvar = function() {
-					cadastrar();
-				};
+			$scope.temMensagem = false;
+			$scope.mensagem = "teste";
 
-				function cadastrar(callback) {
-					$http({
-						method : 'POST',
-						url : '/carro/salvar',
-						data : JSON.stringify(self.carro)
-					}).success(function(data) {
-						if (callback)
-							callback(data)
-					}).error(function(data) {
-						console.log(data[0]);
-						$scope.mensagemErro = data[0];
-						$scope.temErro = true;
-					});
-				}
+			$scope.isModeloSelected = false;
 
-				function listarCategorias() {
-					$http.get('/categorias').success(function(data) {
-						$scope.categorias = data;
-					}).error(function() {
-						console.log("erro");
-					});
-				}
+			this.salvar = function() {
+				cadastrar();
+			};
 
-				function listarTracoes() {
-					$http.get('/tracoes').success(function(data) {
-						$scope.tracoes = data;
-				
-					}).error(function() {
-						console.log("erro");
-					});
-				}
-
-				$scope.$watch('cadastroCtrl.carro.modelo.descricao', function(
-						val) {
-					if (val != '' && val != undefined && val.length > 2 
-							&& !$scope.isModeloSelected) {
-						typeAheadModelo(val);
-						if(self.descricaoTemp !== val
-								&& self.carro.modelo.id !== null){
-							self.carro.modelo.id = null;
-						}
-					} else {
-						$scope.modelos = [];
+			function cadastrar(callback) {
+				$http({
+					method : 'POST',
+					url : '/carro/salvar',
+					data : JSON.stringify(self.carro)
+				}).success(function(data) {
+					if (callback){
+						callback(data)
 					}
-					$scope.isModeloSelected = false;
+					self.success = true;
+					$scope.temMensagem = true;
+					$scope.mensagem = "Carro Salvo com Sucesso!";
+					console.log($scope.mensagem);
+						
+				}).error(function(data) {
+					console.log(data[0]);
+					$scope.mensagem = data[0];
+					$scope.temMensagem = true;
+					self.success = false;
 				});
+			}
 
-				function typeAheadModelo(val) {
-					$http({
-						method : 'POST',
-						url : '/modelos',
-						data : val
-					}).success(function(data) {
-						if (data != null) {
-							$scope.modelos = data;
-						}
-					}).error(function() {
-						console.log("erro");
-					});
-				}
+			function listarCategorias() {
+				$http.get('/categorias').success(function(data) {
+					$scope.categorias = data;
+				}).error(function() {
+					console.log("erro");
+				});
+			}
 
-				this.selectModelo = function(modelo) {
-					$scope.isModeloSelected = true;
+			function listarTracoes() {
+				$http.get('/tracoes').success(function(data) {
+					$scope.tracoes = data;
+
+				}).error(function() {
+					console.log("erro");
+				});
+			}
+
+			$scope.$watch('cadastroCtrl.carro.modelo.descricao', function(val) {
+				if (val != '' && val != undefined && val.length > 2
+						&& !$scope.isModeloSelected) {
+					typeAheadModelo(val);
+					if (self.descricaoTemp !== val
+							&& self.carro.modelo.id !== null) {
+						self.carro.modelo.id = null;
+					}
+				} else {
 					$scope.modelos = [];
-					self.carro.modelo = modelo;
-					self.descricaoTemp = modelo.descricao;
 				}
+				$scope.isModeloSelected = false;
+			});
 
-			} ]);
+			function typeAheadModelo(val) {
+				$http({
+					method : 'POST',
+					url : '/modelos',
+					data : val
+				}).success(function(data) {
+					if (data != null) {
+						$scope.modelos = data;
+					}
+				}).error(function() {
+					console.log("erro");
+				});
+			}
 
-	app.directive("navbarMenu", function() {
-		return {
-			restrict : 'E',
-			templateUrl : '../home.html'
-		};
-	});
+			this.selectModelo = function(modelo) {
+				$scope.isModeloSelected = true;
+				$scope.modelos = [];
+				self.carro.modelo = modelo;
+				self.descricaoTemp = modelo.descricao;
+			}
 
+		} ]);
+
+app.directive("navbarMenu", function() {
+	return {
+		restrict : 'E',
+		templateUrl : '../home.html'
+	};
+});

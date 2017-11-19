@@ -1,45 +1,76 @@
 'use strict';
-	var app = angular.module('crudApp', []);
-/*	app.service('LocalService', function(){});*/
-	app.controller('ConsultaController', [ '$http', '$q', function($http, $q) {
+app.controller('ConsultaController', [ '$http', '$q', '$scope',
+		function($http, $q, $scope) {
 
-		var carro = {};
-		var self = this;
-		self.hasNoElement = true;
-		self.carros = [];
-		listar();
+			var carro = {};
+			var carroFilter;
+			var self = this;
+			self.hasNoElement = true;
+			self.carros = [];
+			self.categorias = [];
+			self.tracoes = [];
+			listarCategorias();
+			listarTracoes();
 
-		this.getCarros = function() {
-			return self.carros;
-		};
+			self.carro = {
+				id : null,
+				placa : null,
+				modelo : null,
+				tracao : null,
+				categoria : null
+			};
 
-		function listar() {
-			$http.get('/carros').success(function(data) {
-				self.carros = data;
-			}).error(function() {
-				console.log("erro");
+			this.getCarros = function() {
+				return self.carros;
+			};
+
+			$scope.$watch('[consultaCtrl.carro.placa, consultaCtrl.carro.modelo.descricao, consultaCtrl.carro.tracao, consultaCtrl.carro.categoria]', function(val) {
+				console.log(val);
+				$http({
+					method : 'POST',
+					url : '/carrosByFiltro',
+					data : JSON.stringify(self.carro)
+				}).success(function(data) {
+					self.carros = data;
+				}).error(function() {
+					console.log("erro");
+				});
 			});
-		}
 
-		this.removerCarro = function (id) {
-			console.log("Excluir" + id);
-			$http({
-				method : 'DELETE',
-				url : '/carro/' + id,
-			}).success(function(data) {
-				console.log(data);
-				listar();
-			}).error(function() {
-				console.log("erro");
-			});
-		}
+			this.removerCarro = function(id) {
+				console.log("Excluir" + id);
+				$http({
+					method : 'DELETE',
+					url : '/carro/' + id,
+				}).success(function(data) {
+					console.log(data);
+					listar();
+				}).error(function() {
+					console.log("erro");
+				});
+			}
 
-	} ]);
+			function listarCategorias() {
+				$http.get('/categorias').success(function(data) {
+					self.categorias = data;
+				}).error(function() {
+					console.log("erro");
+				});
+			}
 
-/*	app.directive("navbarMenu", function() {
-		return {
-			restrict : 'E',
-			templateUrl : '../home.html'
-		};
-	});*/
+			function listarTracoes() {
+				$http.get('/tracoes').success(function(data) {
+					self.tracoes = data;
+
+				}).error(function() {
+					console.log("erro");
+				});
+			}
+
+		} ]);
+
+/*
+ * app.directive("navbarMenu", function() { return { restrict : 'E', templateUrl :
+ * '../home.html' }; });
+ */
 

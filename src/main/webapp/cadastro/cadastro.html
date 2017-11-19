@@ -4,12 +4,12 @@
 	<div class="card-body">
 		<form name="form" 
 			novalidate ng-submit="form.$valid && cadastroCtrl.salvar()">
-			<div class="alert alert-danger" id="errorMessage" ng-show="temErro">{{mensagemErro}}
+			<div ng-class="cadastroCtrl.success ? 'alert alert-success' : 'alert alert-danger'" id="errorMessage" ng-show="temMensagem">{{mensagem}}
 			</div>
 			<div class="form-group row">
 				<div class="col-md-6">
 					<label for="placa" class="col-sm-6">Placa:</label> <input
-						type="text" name="placa" class="form-control col-sm-10 placa"
+						type="text" name="placa" class="form-control col-sm-10 placa required"
 						mask="AAA9999" ng-model="cadastroCtrl.carro.placa" required />
 					<div style="color: red"
 						ng-show="form.placa.$dirty && form.placa.$invalid">Placa
@@ -17,7 +17,7 @@
 				</div>
 				<div class="col-md-6">
 					<label for="modelo" class="col-sm-6">Modelo:</label> <input
-						type="text" name="modelo" class="form-control col-sm-10" required
+						type="text" name="modelo" class="form-control col-sm-10 required" required
 						ng-model="cadastroCtrl.carro.modelo.descricao" />
 					<div style="color: red"
 						ng-show="form.modelo.$dirty && form.modelo.$invalid">

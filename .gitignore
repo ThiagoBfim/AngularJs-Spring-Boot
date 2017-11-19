@@ -30,3 +30,4 @@ src/main/resources/env/
 
 src/main/webapp/frontend/node_modules/
 src/main/webapp/frontend/node/
+src/main/webapp/frontend/
