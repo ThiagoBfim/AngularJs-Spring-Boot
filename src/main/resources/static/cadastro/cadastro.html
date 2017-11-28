@@ -1,0 +1,166 @@
+<meta charset="UTF-8">
+<div class="card bg-light container">
+	<h1>Cadastro</h1>
+	<div class="card-body">
+		<form name="form" novalidate
+			ng-submit="form.$valid && cadastroCtrl.salvar()">
+			<div
+				ng-class="cadastroCtrl.success ? 'alert alert-success' : 'alert alert-danger'"
+				id="errorMessage" ng-show="temMensagem">{{mensagem}}</div>
+			<div class="form-group row">
+				<div class="col-md-6">
+					<label for="placa" class="col-sm-6">Placa:</label> <input
+						type="text" name="placa"
+						class="form-control col-sm-10 placa required" mask="AAA9999"
+						ng-model="cadastroCtrl.carro.placa" required />
+					<div style="color: red" class="col-md-12"
+						ng-show="form.placa.$dirty && form.placa.$invalid">Placa
+						incorreta.</div>
+				</div>
+				<div class="col-md-6">
+					<label for="modelo" class="col-sm-6">Modelo:</label> <input
+						type="text" name="modelo" class="form-control col-sm-10 required"
+						required ng-model="cadastroCtrl.carro.modelo.descricao" />
+					<div style="color: red" class="col-md-12"
+						ng-show="form.modelo.$dirty && form.modelo.$invalid">
+						Informe o Modelo.</div>
+					<div ng-show="modelos.length > 0" class="col-md-12" style="">
+						<ul ng-repeat="modelo in modelos">
+							<li ng-click="cadastroCtrl.selectModelo(modelo)">{{
+								modelo.descricao }}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label for="tracao" class="col-sm-12">Tração:</label> <label
+						ng-repeat="t in tracoes"> <input type="radio"
+						name="tracao" ng-model="cadastroCtrl.carro.tracao" ng-value="t"
+						required /> {{t}}
+					</label>
+				</div>
+				<div class="col-md-4">
+					<label for="categoria" class="col-sm-6">Categoria:</label> <select
+						class="form-control col-sm-10" name="categoria"
+						ng-model="cadastroCtrl.carro.categoria"
+						ng-options="categoria for categoria in categorias" required></select>
+				</div>
+				<div class="col-md-4">
+					<div class="row">
+						<label for="fabricante" class="col-sm-6">Fabricante:</label>
+					</div>
+					<div class="row">
+						<div class="input-group">
+							<input type="text" name="fabricante"
+								ng-model="cadastroCtrl.carro.fabricante.nome" required disabled
+								class="form-control col-sm-10" /> <a href="#"
+								style="text-decoration: none;" class="input-group-addon"
+								data-toggle="modal" data-target="#exampleModalLong">Pesquisar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row float-right">
+				<div class="text-right">
+					<a ui-sref="consulta" class="btn btn-default">Voltar</a>
+					<div class="btn-group">
+						<button id="salvar" type="submit" ng-disabled="!form.$valid"
+							class="btn btn-primary" ng-click="salvar()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalLong" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLongTitle"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">
+							Fabricante
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</h5>
+
+
+					</div>
+					<div class="modal-body">
+
+						<div class="row">
+							<form name="formFabricante" novalidate>
+								<div class="form-group col-md-12">
+									<div class="col-md-6">
+										<label for="nome" class="col-sm-6">Nome:</label> <input
+											name="fabricanteNome" ng-model="cadastroCtrl.fabricante.nome"
+											required type="text" name="nome"
+											class="form-control col-sm-10" placeholder="Informe o nome">
+									</div>
+									<div class="col-md-6"
+										ng-show="cadastroCtrl.getFabricantes().length <= 0">
+										<label for="pais" class="col-sm-6">País:</label> <input
+											name="fabricantePais" ng-model="cadastroCtrl.fabricante.pais"
+											required type="text" name="pais"
+											class="form-control col-sm-10" placeholder="Informe o páis">
+									</div>
+								</div>
+								<div class="col-md-12 float-right" style="text-align: right">
+									<div class="form-group ">
+										<div class="btn-group">
+											<a class="btn btn-primary"
+												ng-click="cadastroCtrl.salvarFabricante()"
+												ng-show="cadastroCtrl.getFabricantes().length <= 0"
+												ng-disabled="!formFabricante.$valid" data-dismiss="modal">Cadastrar</a>
+										</div>
+									</div>
+								</div>
+							</form>
+
+							<div class="col-md-12">
+								<div class="col-md-12" style="padding-top: 10px;">
+									<div id="vazio" class="alert alert-info" role="alert"
+										ng-show="cadastroCtrl.getFabricantes().length <= 0">Nenhum
+										fabricante cadastrado.</div>
+									<table id="tabela" class="table table-striped "
+										ng-show="cadastroCtrl.getFabricantes().length > 0">
+										<thead>
+											<tr>
+												<th>Nome</th>
+												<th>País</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="fabricantes"
+											ng-repeat="fabricante in cadastroCtrl.getFabricantes()">
+											<tr>
+												<td>{{fabricante.nome}}</td>
+												<td>{{fabricante.pais}}</td>
+												<td class="text-right"><input type="radio"
+													name="selecionar" ng-model="fabricante.selecionado"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<div class="btn-group">
+								<a wicket:id="selecionar" class="btn btn-primary"
+									ng-click="cadastroCtrl.selecionar()" data-dismiss="modal">Selecionar</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</div>

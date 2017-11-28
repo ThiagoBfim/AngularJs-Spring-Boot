@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import n3m7.entity.Carro;
+import n3m7.entity.Modelo;
 import n3m7.entity.enuns.Categoria;
 import n3m7.entity.enuns.Tracao;
 import n3m7.service.CarroService;
@@ -42,7 +43,12 @@ public class CarroController {
 			return ResponseEntity.badRequest().body(erros);
 		}
 		if (carro.getModelo().getId() == null) {
-			modeloService.salvar(carro.getModelo());
+			Modelo modelo = modeloService.findByDescricao(carro.getModelo().getDescricao());
+			if (modelo == null) {
+				modeloService.salvar(carro.getModelo());
+			} else {
+				carro.setModelo(modelo);
+			}
 		}
 		return new ResponseEntity<Carro>(carroService.salvar(carro), HttpStatus.OK);
 	}

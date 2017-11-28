@@ -47,14 +47,12 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<!-- NB! Set <version> to the latest released version of frontend-maven-plugin, 
-					like in README.md -->
 				<version>1.6</version>
 
 				<!-- optional -->
 				<configuration>
-					<installDirectory>src/main/webapp/frontend/</installDirectory>
-					<workingDirectory>src/main/webapp/frontend</workingDirectory>
+					<installDirectory>src/main/resources/static/frontend/</installDirectory>
+					<workingDirectory>src/main/resources/static/frontend</workingDirectory>
 				</configuration>
 
 				<executions>
@@ -64,8 +62,6 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<!-- See https://nodejs.org/en/download/ for latest node and npm (lts) 
-								versions -->
 							<nodeVersion>v8.9.0</nodeVersion>
 						</configuration>
 					</execution>
@@ -78,16 +74,6 @@
 						<!-- Optional configuration which provides for running any npm command -->
 						<configuration>
 							<arguments>install</arguments>
-						</configuration>
-					</execution>
-
-					<execution>
-						<id>javascript tests</id>
-						<goals>
-							<goal>karma</goal>
-						</goals>
-						<configuration>
-							<karmaConfPath>src/test/javascript/karma.conf.ci.js</karmaConfPath>
 						</configuration>
 					</execution>
 				</executions>

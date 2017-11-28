@@ -46,7 +46,11 @@ app.controller('ConsultaController', [ '$http', '$q', '$scope',
 				return self.carros;
 			};
 
-			$scope.$watch('[consultaCtrl.carro.placa, consultaCtrl.carro.modelo.descricao, consultaCtrl.carro.tracao, consultaCtrl.carro.categoria]', function(val) {
+			$scope.$watch('[consultaCtrl.carro.placa, consultaCtrl.carro.modelo.descricao, consultaCtrl.carro.tracao, consultaCtrl.carro.categoria, consultaCtrl.carro.fabricante.nome]', function(val) {
+				listar();
+			});
+
+			function listar(){
 				$http({
 					method : 'POST',
 					url : '/carrosByFiltro',
@@ -56,10 +60,9 @@ app.controller('ConsultaController', [ '$http', '$q', '$scope',
 				}).error(function() {
 					console.log("erro");
 				});
-			});
-
+			}
+			
 			this.removerCarro = function(id) {
-				console.log("Excluir" + id);
 				$http({
 					method : 'DELETE',
 					url : '/carro/' + id,

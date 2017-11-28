@@ -11,7 +11,7 @@ public class AppController {
 	public String home(ModelMap modal) {
 		return "home.html";
 	}
-
+	
 	@RequestMapping("/cadastro")
 	public String cadastro(ModelMap modal) {
 		return "cadastro/cadastro.html";

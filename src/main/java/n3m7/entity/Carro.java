@@ -46,13 +46,13 @@ public @Data class Carro implements Serializable {
 	@NotNull
 	private Categoria categoria;
 
-//	@ManyToOne
-//	@JoinColumn(name = "fabricante_id")
-//	@NotNull
-//	private Fabricante fabricante = new Fabricante();
-//
-//	public String getFabricanteFormat() {
-//		return getFabricante() == null ? null : getFabricante().toString();
-//	}
+	@ManyToOne
+	@JoinColumn(name = "fabricante_id")
+	@NotNull
+	private Fabricante fabricante = new Fabricante();
+
+	public String getFabricanteFormat() {
+		return getFabricante() == null ? null : getFabricante().toString();
+	}
 
 }

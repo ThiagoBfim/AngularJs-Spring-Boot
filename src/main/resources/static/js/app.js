@@ -1,7 +1,5 @@
-var app = angular.module('crudApp', [ 'ui.router', 'ngMask' ]);
-
+var app = angular.module('crudApp', [ 'ui.router', 'ngMask',  ]);
 app.config(function($stateProvider, $urlRouterProvider) {
-
 
 	$stateProvider.state('/home', {
 		url : '/home',

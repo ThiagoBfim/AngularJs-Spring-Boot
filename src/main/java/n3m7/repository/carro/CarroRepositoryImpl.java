@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.StringUtils;
 
 import n3m7.entity.Carro;
+import n3m7.entity.Fabricante;
 import n3m7.entity.Modelo;
 
 public class CarroRepositoryImpl implements CarroRepositoryQuery {
@@ -53,6 +54,11 @@ public class CarroRepositoryImpl implements CarroRepositoryQuery {
 		}
 		if (carro.getCategoria() != null) {
 			predicates.add(builder.equal(root.get("categoria"), carro.getCategoria()));
+		}
+		if (carro.getFabricante() != null && carro.getFabricante().getNome() != null) {
+			Join<Carro, Fabricante> join = root.join("fabricante", JoinType.LEFT);
+			predicates.add(builder.like(builder.lower(join.get("nome")),
+					'%' + carro.getFabricante().getNome().toLowerCase() + '%'));
 		}
 
 		return predicates.toArray(new Predicate[predicates.size()]);
