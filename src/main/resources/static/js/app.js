@@ -1,5 +1,7 @@
-var app = angular.module('crudApp', [ 'ui.router', 'ngMask',  ]);
-app.config(function($stateProvider, $urlRouterProvider) {
+var app = angular.module('crudApp', [ 'ui.router', 'ngMask', 'restangular' ]);
+app.config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
+
+	RestangularProvider.setBaseUrl("http://localhost:8080/");
 
 	$stateProvider.state('/home', {
 		url : '/home',

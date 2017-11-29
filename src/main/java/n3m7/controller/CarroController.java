@@ -37,7 +37,7 @@ public class CarroController {
 	@PostMapping(value = "/carro/salvar")
 	public ResponseEntity<?> salvar(@RequestBody final Carro carro) {
 		Carro carroRetrived = carroService.retrieveByPlaca(carro.getPlaca());
-		if (carroRetrived != null) {
+		if (carroRetrived != null && !carro.equals(carroRetrived)) {
 			List<String> erros = new ArrayList<>();
 			erros.add("Placa já existente.");
 			return ResponseEntity.badRequest().body(erros);
@@ -81,16 +81,14 @@ public class CarroController {
 		return new ResponseEntity<List<Tracao>>(tracoes, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/carro/{id}")
-	public String getCarro(@PathVariable("id") Integer id, ModelMap modal) {
-
+	@GetMapping(value = "/carro/{id}")
+	public ResponseEntity<?> getCarro(@PathVariable("id") Integer id, ModelMap modal) {
 		Carro carro = carroService.obter(id);
 		if (carro == null) {
-			// return ResponseEntity.notFound().build();
+			return ResponseEntity.notFound().build();
 		}
-		modal.addAttribute("carroModel", carro);
-		return "cadastro/cadastro.html";
-		// return new ResponseEntity<Carro>(carro, HttpStatus.OK);
+		return new ResponseEntity<Carro>(carro, HttpStatus.OK);
+
 	}
 
 	@DeleteMapping(value = "/carro/{id}")

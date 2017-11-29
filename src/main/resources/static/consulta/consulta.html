@@ -64,7 +64,8 @@
 					<td>{{car.fabricanteFormat}}</td>
 					<td class="text-right">
 						<div class="btn-group btn-group-sm">
-							<a ui-sref="edicao" class="btn btn-dark">Alterar</a>
+						<!-- 	<a ui-sref="edicao" class="btn btn-dark">Alterar</a> -->
+						<a ui-sref="edicao({id: car.id})" class="btn btn-dark">Alterar</a>
 							<a href="#" class="btn btn-danger" 
 							ng-click="consultaCtrl.removerCarro(car.id)">Excluir</a>
 						</div>

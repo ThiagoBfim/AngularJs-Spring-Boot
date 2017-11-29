@@ -1,29 +1,19 @@
 'use strict';
 
 
-/*app.config(function ($routeProvider) {
-    $routeProvider
-       .when('/carro/:id', {
-         controller: 'FriendsController',
-         templateUrl: 'views/friends.html'
-      })
-      .otherwise({
-        redirectTo: '/friends/foo'
-      });  
-})*/
-
 app.config(function ($stateProvider) {
+
 	$stateProvider.state('edicao', {
-		url : '/carro',
-		templateUrl : '/carro/4',
-		controller : 'CadastroController',
-		controllerAs : 'cadastroCtrl'
+	    url: '/carro/:id',
+	    templateUrl: '/cadastro' ,
+	    controller : 'CadastroController',
+	    controllerAs: 'cadastroCtrl'
 	});
 
 })
 
-app.controller('ConsultaController', [ '$http', '$q', '$scope',
-		function($http, $q, $scope) {
+app.controller('ConsultaController', [ '$http', '$q', '$scope', 'Restangular',
+		function($http, $q, $scope, Restangular) {
 
 			var carroFilter;
 			var self = this;
@@ -31,8 +21,6 @@ app.controller('ConsultaController', [ '$http', '$q', '$scope',
 			self.carros = [];
 			self.categorias = [];
 			self.tracoes = [];
-			listarCategorias();
-			listarTracoes();
 
 			self.carro = {
 				id : null,
@@ -49,52 +37,30 @@ app.controller('ConsultaController', [ '$http', '$q', '$scope',
 			$scope.$watch('[consultaCtrl.carro.placa, consultaCtrl.carro.modelo.descricao, consultaCtrl.carro.tracao, consultaCtrl.carro.categoria, consultaCtrl.carro.fabricante.nome]', function(val) {
 				listar();
 			});
-
+			
+			Restangular.all('/carrosByFiltro').post(self.carro).then(function(result) {
+				self.carros = result;
+		    });
+			
 			function listar(){
-				$http({
-					method : 'POST',
-					url : '/carrosByFiltro',
-					data : JSON.stringify(self.carro)
-				}).success(function(data) {
-					self.carros = data;
-				}).error(function() {
-					console.log("erro");
-				});
+				Restangular.all('/carrosByFiltro').post(self.carro).then(function(result) {
+					self.carros = result;
+			    });
 			}
 			
 			this.removerCarro = function(id) {
-				$http({
-					method : 'DELETE',
-					url : '/carro/' + id,
-				}).success(function(data) {
-					console.log(data);
+				Restangular.all('/carro/' + id).remove().then(function() {
 					listar();
-				}).error(function() {
-					console.log("erro");
-				});
+			    });
 			}
-
-			function listarCategorias() {
-				$http.get('/categorias').success(function(data) {
-					self.categorias = data;
-				}).error(function() {
-					console.log("erro");
-				});
-			}
-
-			function listarTracoes() {
-				$http.get('/tracoes').success(function(data) {
-					self.tracoes = data;
-
-				}).error(function() {
-					console.log("erro");
-				});
-			}
-
+			
+			Restangular.all('/categorias').getList().then(function(result) {
+				self.categorias = result;
+		    });
+			
+			Restangular.all('/tracoes').getList().then(function(result) {
+				self.tracoes = result;
+		    });
+		
 		} ]);
-
-/*
- * app.directive("navbarMenu", function() { return { restrict : 'E', templateUrl :
- * '../home.html' }; });
- */
 
