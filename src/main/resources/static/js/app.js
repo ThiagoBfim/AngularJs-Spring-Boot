@@ -1,5 +1,13 @@
-var app = angular.module('crudApp', [ 'ui.router', 'ngMask', 'restangular' ]);
-app.config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
+angular
+		.module('crudApp', [
+		        'ui.router',
+                'ngMask',
+                'restangular'
+        ])
+        .config(config);
+                 
+                 
+function config($stateProvider, $urlRouterProvider, RestangularProvider) {
 
 	RestangularProvider.setBaseUrl("http://localhost:8080/");
 
@@ -21,4 +29,4 @@ app.config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
 		controllerAs : 'consultaCtrl'
 	});
 
-});
+};

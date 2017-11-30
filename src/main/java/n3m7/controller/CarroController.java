@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +39,7 @@ public class CarroController {
 		if (carroRetrived != null && !carro.equals(carroRetrived)) {
 			List<String> erros = new ArrayList<>();
 			erros.add("Placa já existente.");
-			return ResponseEntity.badRequest().body(erros);
+			return new ResponseEntity<List<String>>(erros, HttpStatus.BAD_REQUEST);
 		}
 		if (carro.getModelo().getId() == null) {
 			Modelo modelo = modeloService.findByDescricao(carro.getModelo().getDescricao());
@@ -87,6 +86,7 @@ public class CarroController {
 		if (carro == null) {
 			return ResponseEntity.notFound().build();
 		}
+		carro.getFabricante().setSelecionado(Boolean.TRUE);
 		return new ResponseEntity<Carro>(carro, HttpStatus.OK);
 
 	}
