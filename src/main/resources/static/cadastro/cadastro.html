@@ -18,18 +18,7 @@
 						incorreta.</div>
 				</div>
 				<div class="col-md-6">
-					<label for="modelo" class="col-sm-6">Modelo:</label> <input
-						type="text" name="modelo" class="form-control col-sm-10 required"
-						required ng-model="cadastroCtrl.carro.modelo.descricao" />
-					<div style="color: red" class="col-md-12"
-						ng-show="form.modelo.$dirty && form.modelo.$invalid">
-						Informe o Modelo.</div>
-					<div ng-show="modelos.length > 0" class="col-md-12" style="">
-						<ul ng-repeat="modelo in modelos">
-							<li ng-click="cadastroCtrl.selectModelo(modelo)">{{
-								modelo.descricao }}</li>
-						</ul>
-					</div>
+					<modelo></modelo>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -61,7 +50,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="form-group row float-right">
 				<div class="text-right">
 					<a ui-sref="consulta" class="btn btn-default">Voltar</a>
@@ -72,8 +60,9 @@
 				</div>
 			</div>
 		</form>
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModalLong" tabindex="-1"
+		    <fabricante></fabricante>
+		
+		<!-- <div class="modal fade" id="exampleModalLong" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLongTitle"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -161,7 +150,7 @@
 			</div>
 
 
-		</div>
+		</div> -->
 
 
 	</div>

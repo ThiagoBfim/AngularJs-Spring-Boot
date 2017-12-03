@@ -3,10 +3,23 @@
 
 	angular
 		.module('crudApp')
-		.controller('CadastroController', CadastroController);
-
+		.controller('CadastroController', CadastroController)
+		.directive('fabricante', function() {
+		  return {
+			  controller: CadastroController,
+			  controllerAs: 'cadastroCtrl',
+			  templateUrl: '../cadastro/fabricanteModal.html'
+		  };
+		})
+	  	.directive('modelo', function() {
+		  return {
+			  templateUrl: '../cadastro/modelo.html'
+		  };
+		});
+	
 	CadastroController.$inject = [ '$http', '$scope', 'Restangular', '$stateParams' ];
 
+	
 	function CadastroController($http, $scope, Restangular, $stateParams) {
 
 		var self = this;
@@ -34,12 +47,11 @@
 				Restangular
 						.one('/carro/' + id)
 						.get()
-						.then(
-								function(result) {
-									self.carro = result;
-									self.saveButton = "Alterar";
-
-								});
+						.then(function(result) {
+								self.carro = result;
+								self.descricaoTemp = self.carro.modelo.descricao;
+								self.saveButton = "Alterar";
+							});
 			}
 		}
 
@@ -91,8 +103,7 @@
 					.then(function(result) {
 							self.carro.fabricante = result;
 							self.carro.fabricante.selecionado = true;
-							self.fabricantes
-									.pop(self.carro.fabricante);
+							self.fabricantes.pop(self.carro.fabricante);
 							self.fabricante = {};
 						});
 		};
@@ -117,24 +128,26 @@
 						});
 
 		}
-
+	
 		$scope
-			.$watch('cadastroCtrl.carro.modelo.descricao',
-				function(val) {
-					if (val != ''
-							&& val != undefined
-							&& val.length >= 2
-							&& !$scope.isModeloSelected) {
+		.$watch('cadastroCtrl.carro.modelo.descricao',
+			function(val) {
+				if (val != ''
+						&& val != undefined
+						&& val.length >= 2
+						&& !$scope.isModeloSelected) {
+					if(self.carro.modelo === undefined || self.carro.modelo.id === null){
 						typeAheadModelo(val);
-						if (self.descricaoTemp !== val
-								&& self.carro.modelo.id !== null) {
-							self.carro.modelo.id = null;
-						}
-					} else {
-						$scope.modelos = [];
 					}
-					$scope.isModeloSelected = false;
-				});
+					if (self.carro.modelo !== undefined && self.descricaoTemp !== val
+							&& self.carro.modelo.id !== null) {
+						self.carro.modelo.id = null;
+					}
+				} else {
+					$scope.modelos = [];
+				}
+				$scope.isModeloSelected = false;
+			});
 
 		function typeAheadModelo(val) {
 			Restangular.all('/modelos').post(val).then(
@@ -142,14 +155,14 @@
 					$scope.modelos = result;
 				});
 		}
-
+	
 		this.selectModelo = function(modelo) {
 			$scope.isModeloSelected = true;
 			$scope.modelos = [];
 			self.carro.modelo = modelo;
 			self.descricaoTemp = modelo.descricao;
 		}
-
+	
 		Restangular.all('/categorias').getList().then(
 			function(result) {
 				$scope.categorias = result;

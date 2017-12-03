@@ -33,7 +33,6 @@ public class CarroRepositoryImpl implements CarroRepositoryQuery {
 		// criar as restrições
 		Predicate[] predicates = criarRestricoes(carro, builder, root);
 		criteria.where(predicates);
-
 		TypedQuery<Carro> query = manager.createQuery(criteria);
 
 		return query.getResultList();
@@ -55,10 +54,15 @@ public class CarroRepositoryImpl implements CarroRepositoryQuery {
 		if (carro.getCategoria() != null) {
 			predicates.add(builder.equal(root.get("categoria"), carro.getCategoria()));
 		}
+		
 		if (carro.getFabricante() != null && carro.getFabricante().getNome() != null) {
 			Join<Carro, Fabricante> join = root.join("fabricante", JoinType.LEFT);
-			predicates.add(builder.like(builder.lower(join.get("nome")),
-					'%' + carro.getFabricante().getNome().toLowerCase() + '%'));
+			Predicate predicateNome = builder.like(builder.lower(join.get("nome")),
+					'%' + carro.getFabricante().getNome().toLowerCase() + '%');
+			Predicate predicatePais = builder.like(builder.lower(join.get("pais")),
+					'%' + carro.getFabricante().getNome().toLowerCase() + '%');
+			Predicate or = builder.or(predicateNome, predicatePais);
+			predicates.add(or);
 		}
 
 		return predicates.toArray(new Predicate[predicates.size()]);
